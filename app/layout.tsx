@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import "./globals.css";
+import Provider from "./provider";
 
 
 export const metadata: Metadata = {
@@ -20,7 +21,7 @@ export default function RootLayout({
       <body
         className={roboto.className}
       >
-        {children}
+        <Provider>{children}</Provider>
       </body>
     </html>
   );

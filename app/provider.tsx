@@ -1,4 +1,5 @@
 import React from 'react'
+import Header from './_components/Header';
 
 const Provider = ({
   children,
@@ -7,7 +8,8 @@ const Provider = ({
 }>) => {
   return (
     <div>
-      
+      <Header/>
+      { children }
     </div>
   )
 }
