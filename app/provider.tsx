@@ -1,11 +1,9 @@
+"use client";
+
 import React from 'react'
 import Header from './_components/Header';
 
-const Provider = ({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) => {
+const Provider = ({children,}: Readonly<{children: React.ReactNode;}>) => {
   return (
     <div>
       <Header/>

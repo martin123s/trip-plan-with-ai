@@ -1,11 +1,13 @@
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import { CityList } from "./_components/CityList";
 import Hero from "./_components/Hero";
 
 export default function Home() {
   return (
     <div className="">
-      <Hero/>
+      <Hero />
+      <CityList/>
     </div>
   );
 }
