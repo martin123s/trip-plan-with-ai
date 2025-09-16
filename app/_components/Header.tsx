@@ -1,4 +1,7 @@
+"use client"
+
 import { Button } from '@/components/ui/button'
+import { SignInButton, useUser } from '@clerk/nextjs'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
@@ -8,6 +11,10 @@ const menu = [ { name: 'Home', path: '/' }, { name: 'Pricing', path: '/pricing' 
   
 
 const Header = () => {
+
+  const { user } = useUser()
+
+
   return (
     <div className='flex justify-between items-center mt-3 mx-2'>
       {/* logo */}
@@ -26,10 +33,18 @@ const Header = () => {
       </div>
       
       {/* sign up */}
-      <Button className='cursor-pointer hover:text-destructive'>
-        Get Started
-      </Button>
-
+      {!user ?
+        <SignInButton mode='modal'>
+          <Button className='cursor-pointer hover:text-destructive'>
+            Get Started
+          </Button>
+        </SignInButton> :
+        <Link href={'/create-trip'}>
+          <Button className='cursor-pointer hover:text-destructive'>
+            Create New Trip
+          </Button>
+        </Link>
+      }
     </div>
   )
 }

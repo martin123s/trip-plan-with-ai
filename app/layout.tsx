@@ -1,8 +1,9 @@
 import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
+import { ConvexClientProvider } from "./ConvexClientProvider";
 import "./globals.css";
-import Provider from "./provider";
+
 
 
 export const metadata: Metadata = {
@@ -18,7 +19,7 @@ export default function RootLayout({ children, }: Readonly<{ children: React.Rea
     <ClerkProvider>
       <html lang="en">
         <body className={roboto.className}>
-          <Provider>{children}</Provider>
+          <ConvexClientProvider>{children}</ConvexClientProvider>
         </body>
       </html>
     </ClerkProvider>
