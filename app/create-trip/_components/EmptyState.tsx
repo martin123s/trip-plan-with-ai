@@ -11,12 +11,12 @@ const EmptyState = ({onSelectOption}: any) => {
         Let our AI trip planner guide you step by step. Answer a few simple questions, and get a personalized travel plan instantly.
       </p>
 
-      <div className="flex flex-col gap-4 mt-5">
+      <div className="grid grid-cols-4 gap-4 mt-7">
         {suggestions.map((sgt, idx) => (
           <div key={idx} onClick={() => onSelectOption(sgt.title)}
-            className="flex items-center gap-2 border-b-2 rounded-full p-2 cursor-pointer hover:border-teal-700 hover:shadow-lg hover:shadow-teal-700 hover:scale-105 transition-all">
+            className="items-center border-b-2 rounded-lg p-2 cursor-pointer hover:border-teal-700 shadow-lg hover:shadow-teal-700 bg-gray-50">
             {sgt.icon}
-            <h2 className='text-lg'>{sgt.title}</h2>
+            <h2 className='text-sm mt-2'>{sgt.title}</h2>
           </div>
         ))}
       </div>
