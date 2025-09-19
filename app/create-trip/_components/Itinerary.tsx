@@ -2,7 +2,11 @@ import React from 'react'
 import { Timeline } from "@/components/ui/timeline";
 import { TripInfo } from "@/app/create-trip/_components/ChatBox";
 import Image from 'next/image';
-import { Star, Wallet } from 'lucide-react';
+import { Clock, ExternalLink, Star, Ticket, Wallet } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
+import HotelCard from './HotelCard';
+import DayActivityCard from './DayActivityCard';
 
 const TRIP_DATA: TripInfo=
 {
@@ -297,6 +301,7 @@ const TRIP_DATA: TripInfo=
 
 
 const Itinerary = () => {
+
   const data = [
     {
       title: "Hotels",
@@ -304,16 +309,7 @@ const Itinerary = () => {
         <>
           <div className='grid grid-cols-1 md:grid-cols-2 gap-6 space-y-3'>
             {TRIP_DATA?.hotels.map((hotel, idx) => (
-              <div key={idx} className="flex flex-col gap-1">
-                <h2 className="text-xl text-teal-800">{hotel?.hotel_name}</h2>
-                <img src={'https://assets.aceternity.com/templates/startup-3.webp'} alt='hotel image' width={400} height={400} className='rounded-xl shadow-lg object-cover mb-2' />
-                <h2 className="text-md font-light">{hotel?.hotel_address}</h2>
-                <div className="flex justify-between items-center">
-                  <p className="flex gap-2 text-yellow-700"><Wallet />{hotel?.price_per_night} / night</p>
-                  <p className="flex gap-2 text-blue-700"><Star />{hotel?.rating}</p>
-                </div>
-                <p className="line-clamp-2 text-gray-500">{hotel?.description}</p>
-              </div>
+              <HotelCard hotel={hotel} key={idx} />
             ))}
           </div>
           <div className="mb-14"></div>
@@ -321,26 +317,20 @@ const Itinerary = () => {
       ),
       
     },
-    {
-      title: "Places",
+    ...TRIP_DATA?.itinerary.map((dayData, idx) => ({
+      title: `Day ${dayData?.day}`,
       content: (
-        <div className='grid grid-cols-1 md:grid-cols-2 gap-6 space-y-3'>
-          {TRIP_DATA?.hotels.map((hotel, idx) => (
-            <div key={idx} className="flex flex-col gap-1 ">
-              <h2 className="text-xl text-teal-800">{hotel?.hotel_name}</h2>
-              <img src={'https://assets.aceternity.com/templates/startup-3.webp'} alt='hotel image' width={400} height={400} className='rounded-xl shadow-lg object-cover mb-2' />
-              <h2 className="text-md font-light">{hotel?.hotel_address}</h2>
-              <div className="flex justify-between items-center">
-                <p className="flex gap-2 text-yellow-700"><Wallet />{hotel?.price_per_night} / night</p>
-                <p className="flex gap-2 text-blue-700 mr-1"><Star />{hotel?.rating}</p>
-              </div>
-              <p className="line-clamp-2 text-gray-500">{hotel?.description}</p>
-            </div>
-          ))}
+        <div key={idx} className="d">
+          <p className="text-xl mb-1 ">Best Time: {dayData?.best_time_to_visit_day}</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {dayData?.activities.map((act, index) => (
+              <DayActivityCard key={index} act={ act } />
+            ))}
+          </div>
+          <div className="mb-14"></div>
         </div>
-      ),
-      
-    },
+      )
+    }))
   ]
   return (
     <div className="relative w-full h-[82vh] overflow-auto">

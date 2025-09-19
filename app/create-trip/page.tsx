@@ -12,7 +12,7 @@ const CreateTrip = () => {
       </div>
 
       {/* right side shows map and trip plan */}
-      <div className="basis-[58%] pl-2">
+      <div className="basis-[58%] pl-5">
         <Itinerary/>
       </div>
     </div>
