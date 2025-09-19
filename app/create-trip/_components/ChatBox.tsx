@@ -17,7 +17,32 @@ import { v4 as uuidv4 } from 'uuid';
 
 
 type Message = { role: string, content: string, ui?: string }
-export type TripInfo = { budget: string, destination: string, duration: string, group_size: string, origin: string, hotels:any, itinerary: any }
+export type TripInfo = { budget: string, destination: string, duration: string, group_size: string, origin: string, hotels: Hotel[], itinerary: Itinerary[] }
+type Hotel = {
+  hotel_name: string,
+  hotel_address: string,
+  price_per_night: string,
+  hotel_image_url: string,
+  geo_coordinates:{ latitude: number, longitude: number },
+  rating: number,
+  description: string,
+}
+type Activity = {
+  place_name: string,
+  place_details: string,
+  place_image_url: string,
+  geo_coordinates:{ latitude: number, longitude: number },
+  place_address: string,
+  ticket_price: string,
+  time_travel_each_location: string,
+  best_time_to_visit: string,
+}
+type Itinerary = {
+  day: number,
+  day_plan: string,
+  best_time_to_visit_day: string,
+  activities: Activity[]
+}
 
 const ChatBox = () => {
 
@@ -32,7 +57,7 @@ const ChatBox = () => {
   const CreateTrip = useMutation(api.tripList.CreateNewTrip)
 
   const onSend = async() => {
-    // if (!userInput?.trim?.()) return
+    if (!userInput?.trim?.()) return
     setLoading(true)
     setUserInput('')
     const newMsg: Message = { role: 'user', content: userInput }

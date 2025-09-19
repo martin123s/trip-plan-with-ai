@@ -1,5 +1,24 @@
-import { suggestions } from '@/app/_components/Hero'
 import React from 'react'
+import { Globe, Globe2, Landmark, Plane } from 'lucide-react'
+
+export const suggestions = [
+  {
+    title: 'Create New Trip', 
+    icon: <Globe2 className='text-blue-500 h-5 w-5'/>
+  },
+  {
+    title: 'Where to go', 
+    icon: <Plane className='text-green-500 h-5 w-5'/>
+  },
+  {
+    title: 'Discover Hiddens', 
+    icon: <Landmark className='text-orange-500 h-5 w-5'/>
+  },
+  {
+    title: 'Adventure Trip', 
+    icon: <Globe className='text-yellow-600 h-5 w-5'/>
+  }
+]
 
 const EmptyState = ({onSelectOption}: any) => {
   return (
