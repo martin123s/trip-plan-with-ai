@@ -40,8 +40,8 @@ export const Timeline = ({ data, tripData }: { data: TimelineEntry[], tripData: 
       className="w-full bg-white dark:bg-neutral-950 font-sans"
       ref={containerRef}
     >
-      <div className="max-w-7xl mx-auto pt-5 px-4 md:px-8 lg:px-10 sticky top-0 z-50 bg-white pb-14">
-        <h2 className="text-lg md:text-3xl mb-4 text-black dark:text-white max-w-4xl font-semibold">
+      <div className="max-w-7xl mx-auto pt-5 px-4 md:px-8 lg:px-10 sticky top-0 z-50 bg-white pb-18">
+        <h2 className="text-lg md:text-3xl mb-4 text-black dark:text-white font-semibold">
           Your Trip Itinerary from <span className="texg-lg text-destructive">{tripData?.origin}</span> to <span className="texg-lg text-destructive">{tripData?.destination}</span> is ready !
         </h2>
         <div className="flex gap-5 items-center">

@@ -1,9 +1,10 @@
 "use client"
 
 import { Button } from '@/components/ui/button'
-import { SignInButton, useUser } from '@clerk/nextjs'
+import { SignInButton, UserButton, useUser } from '@clerk/nextjs'
 import Image from 'next/image'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import React from 'react'
 
 const menu = [ { name: 'Home', path: '/' }, { name: 'Pricing', path: '/pricing' },
@@ -13,7 +14,7 @@ const menu = [ { name: 'Home', path: '/' }, { name: 'Pricing', path: '/pricing' 
 const Header = () => {
 
   const { user } = useUser()
-
+  const path = usePathname()
 
   return (
     <div className='flex justify-between items-center mt-3 mx-2'>
@@ -32,19 +33,28 @@ const Header = () => {
         )) }
       </div>
       
-      {/* sign up */}
-      {!user ?
-        <SignInButton mode='modal'>
-          <Button className='cursor-pointer hover:text-destructive'>
-            Get Started
-          </Button>
-        </SignInButton> :
-        <Link href={'/create-trip'}>
-          <Button className='cursor-pointer hover:text-destructive'>
-            Create New Trip
-          </Button>
-        </Link>
-      }
+      {/* sign in */}
+      <div className="flex gap-5">
+        {!user ?
+          <SignInButton mode='modal'>
+            <Button className='cursor-pointer hover:text-destructive'>
+              Get Started
+            </Button>
+          </SignInButton> :
+          path === '/create-trip' ? 
+          <Link href={'/my-trips'}>
+            <Button className='cursor-pointer hover:shadow-lg hover:shadow-teal-700'>
+              My Trips
+            </Button>
+          </Link> :
+          <Link href={'/create-trip'}>
+            <Button className='cursor-pointer hover:shadow-lg hover:shadow-teal-700'>
+              Create New Trip
+            </Button>
+          </Link>
+        }
+        <UserButton />
+      </div>
     </div>
   )
 }

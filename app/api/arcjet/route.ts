@@ -2,7 +2,7 @@ import arcjet, { tokenBucket } from "@arcjet/next"
 import { NextResponse } from "next/server"
 
 
-const aj = arcjet({
+export const aj = arcjet({
   key: process.env.ARCJET_KEY!,
   rules: [
     // Create a token bucket rate limit. Other algorithms are supported.
@@ -14,7 +14,7 @@ const aj = arcjet({
       capacity: 10, // bucket maximum capacity of 10 tokens
     }),
   ],
-});
+})
 
 export async function GET(req: Request) {
   const userId = "user123"; // Replace with your authenticated user ID

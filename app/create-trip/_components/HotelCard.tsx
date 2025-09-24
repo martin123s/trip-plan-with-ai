@@ -18,17 +18,19 @@ const HotelCard = ({ hotel }: { hotel: Hotel }) => {
 
   const GetGooglePlace = async() => {
     const res = await axios.post('/api/google-place-detail', { placeName: hotel?.hotel_name })
-
-    // if(!res?.data?.error) return
     const safeUrl = res?.data ? res.data : undefined
     setUrl(safeUrl)
   }
 
   return (
     <div className="flex flex-col gap-1">
-      <h2 className="text-xl text-teal-800">{hotel?.hotel_name}</h2>
-      <Image src={url ? url : 'https://assets.aceternity.com/templates/startup-1.webp'} alt='hotel image' width={400} height={400} className='rounded-xl shadow-lg object-cover mb-2' />
-      <h2 className="text-md font-light">{hotel?.hotel_address}</h2>
+      
+      <div className="relative w-full aspect-[4/3] md:aspect-video rounded-xl shadow-lg overflow-hidden mb-2 ">
+        <Image src={url ? url : 'https://assets.aceternity.com/templates/startup-1.webp'} alt='hotel image'
+        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" className='object-cover' fill/>
+      </div>
+      <h2 className="text-xl text-teal-800 line-clamp-1">{hotel?.hotel_name}</h2>
+      <h2 className="text-md font-light line-clamp-1">{hotel?.hotel_address}</h2>
       <div className="flex justify-between items-center">
         <p className="flex gap-2 text-yellow-700"><Wallet />{hotel?.price_per_night} / night</p>
         <p className="flex gap-2 text-blue-700"><Star />{hotel?.rating}</p>

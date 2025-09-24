@@ -14,6 +14,7 @@ import { useMutation } from 'convex/react'
 import { api } from '@/convex/_generated/api'
 import { userStore } from '@/store/useUserStore';
 import { v4 as uuidv4 } from 'uuid';
+import { tripStore } from '@/store/useTripStore'
 
 
 type Message = { role: string, content: string, ui?: string }
@@ -52,11 +53,12 @@ const ChatBox = () => {
   const [isFinal, setIsFinal] = useState(false)
   const [trip, setTrip] = useState<TripInfo>()
   const userGlobe = userStore((state: any) => state.userGlobe)
+  const updateCurrentTrips = tripStore((state) => state.updateCurrentTrips)
 
 
   const CreateTrip = useMutation(api.tripList.CreateNewTrip)
 
-  const onSend = async() => {
+  const onSend = async () => {
     if (!userInput?.trim?.()) return
     setLoading(true)
     setUserInput('')
@@ -78,6 +80,7 @@ const ChatBox = () => {
 
     if (isFinal) {
       setTrip(result?.data?.trip_plan)
+      updateCurrentTrips(result?.data?.trip_plan)
       const trip_id = uuidv4()
       await CreateTrip({
         tripId: trip_id,
@@ -150,7 +153,7 @@ const ChatBox = () => {
         {loading &&
           <div className="flex justify-start mt-2">
             <div className="max-w-lg bg-gray-200 text-black px-4 py-2 rounded-lg">
-              <Loader className='animate-spin size={45}'/>
+              <Loader className='animate-spin w-14' size={32}/>
             </div>
           </div>
         }

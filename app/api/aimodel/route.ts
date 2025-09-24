@@ -1,5 +1,7 @@
+import { auth, currentUser } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
+import { aj } from "../arcjet/route";
 
 export const openai = new OpenAI({
   baseURL: "https://openrouter.ai/api/v1",
@@ -17,11 +19,11 @@ const PROMPT = `You are an AI Trip Planner Agent, your goal is to help the user 
 Do not ask multiple questions at once, and never ask irrelevant questions.
 If any answer is missing or unclear, ask the user to clarify before processing. 
 Always maintain a conversational, interactive style while asking questions.
-Along with response also send which ui component to display for generative UI, for example 'budget/groupSize/tripDuration/final', where Final means AI generating complete final output.
+Along with response also send which ui component to display for generative UI, for example 'groupSize/budget/tripDuration/special/final', where Final means AI generating complete final output. But don't show any ui component if is asking starting city and destination city.
 Once all required information is collected, generate and return a **strict JSON response only** (no explanations or extra text) with following JSON schema:
 {
   resp: 'Text Resp',
-  ui: 'budget/groupSize/tripDuration/final'
+  ui: 'groupSize/budget/tripDuration/special/final'
 }`;
 
 const FINAL_PROMPT = `Generate Travel Plan with given details, give me Hotels options list with hotel name, hotel address, price per night, hotel image url, geo coordinates, rating, descriptions of hotel and suggest itinerary with place name, place details, place image url, place geo coordinates, geo coordinates, place address, ticket price, time travel each of the location, with each day plan with best time to visit in JSON format.
@@ -62,9 +64,26 @@ Output schema:
 `
 
 export async function POST(req: NextRequest) {
-  try {
-    const { messages, isFinal } = await req.json();
 
+  const { messages, isFinal } = await req.json();
+  const user = await currentUser()
+  
+  const { has } = await auth()
+  const hasPremiumAccess = has({ plan: 'monthly' })
+
+  const decision = await aj.protect(req, { userId: user?.primaryEmailAddress?.emailAddress ?? '', requested: isFinal ? 5 : 0 });
+
+
+  if (decision?.reason?.remaining === 0 && !hasPremiumAccess) {
+    return NextResponse.json({
+      resp: 'No Free Credit Remaining',
+      ui: 'limit'
+    });
+  }
+
+
+
+  try {
     const completion = await openai.chat.completions.create({
       model: "openai/gpt-4.1-mini",
       response_format: { type: "json_object" },
