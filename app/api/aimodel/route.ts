@@ -26,7 +26,7 @@ Once all required information is collected, generate and return a **strict JSON 
   ui: 'groupSize/budget/tripDuration/special/final'
 }`;
 
-const FINAL_PROMPT = `Generate Travel Plan with given details, give me Hotels options list with hotel name, hotel address, price per night, hotel image url, geo coordinates, rating, descriptions of hotel and suggest itinerary with place name, place details, place image url, place geo coordinates, geo coordinates, place address, ticket price, time travel each of the location, with each day plan with best time to visit in JSON format.
+const FINAL_PROMPT = `Generate Travel Plan with given details, give me Hotels options list with hotel name, hotel address, price per night, hotel image url, geo coordinates, rating, descriptions of hotel and suggest itinerary with place name, place details, place image url, place geo coordinates, place address, ticket price, time travel each of the location, with each day plan with best time to visit in JSON format.
 Output schema:
 {
   "trip_plan": {
