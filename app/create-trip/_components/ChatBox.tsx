@@ -123,7 +123,11 @@ const ChatBox = () => {
   }, [messages])
   
   useEffect(() => {
-    if(isFinal && userInput) onSend()
+    if (isFinal && userInput) onSend()
+    
+    return () => {
+      updateCurrentTrips(null)
+    }
   }, [isFinal])
 
 
