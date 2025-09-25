@@ -2,41 +2,45 @@ import React, { useEffect, useState } from 'react'
 import { ArrowBigRight } from 'lucide-react'
 import Image from 'next/image'
 import { TripDoc } from '@/store/useTripStore'
-import axios from 'axios'
-import { imageURLStore, DestinationURL } from '@/store/useImageURLStore'
+import { useMutation } from 'convex/react'
+import { api } from '@/convex/_generated/api'
+import { imageURLStore } from '@/store/useImageURLStore'
 import Link from 'next/link'
+import axios from 'axios'
+
+
 
 const TripCard = ({ trip }: { trip: TripDoc }) => {
 
-  const addDestImage = imageURLStore(state => state.addDestImage)
-  const destImageURL = imageURLStore(state => state.destImageURL)
   const [url, setUrl] = useState<string>()
+  const CreateImgURL = useMutation(api.imageUrlList.CreateImageURL)
+  const imageURLs = imageURLStore(state => state.imageURLs)
+  const addImage = imageURLStore(state => state.addImage)
+  const destination = trip?.tripDetails?.destination?.split(",")[0]
 
   useEffect(() => {
-    if(!trip) return
-    const exists = destImageURL.find(
-      (d) => d.tripId === trip.tripId && d.dest_image_url
-    )
-    if (exists) {
-      setUrl(exists.dest_image_url)
+    if (!trip) return
+    const existingURL = imageURLs.find(img => img.name === destination)
+    
+    if (existingURL) {
+      setUrl(existingURL.url)
       return
     }
     GetGooglePlace()
-  }, [trip])
+  }, [trip, imageURLs])
+
 
   const GetGooglePlace = async () => {
-    const name = trip?.tripDetails?.destination?.split(",")[0]
-    const res = await axios.post('/api/google-place-detail', { placeName: name })
+    const res = await axios.post('/api/google-place-detail', { placeName: destination})
     const safeUrl = res?.data ? res.data : undefined
-    setUrl(safeUrl)
 
-    const newDest: DestinationURL = {
-      destination: name,
-      dest_image_url: safeUrl,
-      tripId: trip?.tripId ?? "",
+    if (safeUrl) {
+      setUrl(safeUrl)
+      addImage({ name: destination, type: "city", url: safeUrl })
+      await CreateImgURL({ name: destination, type: "city", url: safeUrl })
     }
-    addDestImage(newDest)
   }
+
 
   return (
     <Link href={`/view-trip/${trip?.tripId}`}

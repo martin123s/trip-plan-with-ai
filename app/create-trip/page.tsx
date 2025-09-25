@@ -1,15 +1,30 @@
 "use client"
 
 import { Map, Plane } from 'lucide-react'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import ChatBox from './_components/ChatBox'
 import GlobalMap from './_components/GlobalMap'
 import Itinerary from './_components/Itinerary'
+import { useConvex } from 'convex/react'
+import { api } from '@/convex/_generated/api'
+import { imageURLStore } from '@/store/useImageURLStore'
 
 
 const CreateTrip = () => {
 
   const [showMap, setShowMap] = useState(false)
+  const convex = useConvex()
+  const getAllImageURL = imageURLStore(state => state.getAllImageURL)
+  const imageURLs = imageURLStore(state => state.imageURLs)
+
+  useEffect(() => {
+    if(imageURLs.length !== 0) return
+    const getAllUrls = async () => {
+      const result = await convex.query(api.imageUrlList.GetImageURLs)
+      getAllImageURL(result)
+    }
+    getAllUrls()
+  },[convex, imageURLs])
 
   return (
     // <div className='grid grid-cols-1 md:grid-cols-2 gap-5 p-10'>

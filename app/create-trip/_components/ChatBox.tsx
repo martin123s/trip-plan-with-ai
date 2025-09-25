@@ -18,12 +18,20 @@ import { tripStore } from '@/store/useTripStore'
 
 
 type Message = { role: string, content: string, ui?: string }
-export type TripInfo = { budget: string, destination: string, duration: string, group_size: string, origin: string, hotels: Hotel[], itinerary: Itinerary[] }
+export type TripInfo = {
+  budget: string,
+  destination: string,
+  duration: string,
+  group_size: string,
+  origin: string,
+  origin_image_url: string,
+  hotels: Hotel[],
+  itinerary: Itinerary[]
+}
 export type Hotel = {
   hotel_name: string,
   hotel_address: string,
   price_per_night: string,
-  hotel_image_url: string,
   geo_coordinates:{ latitude: number, longitude: number },
   rating: number,
   description: string,
@@ -31,7 +39,6 @@ export type Hotel = {
 export type Activity = {
   place_name: string,
   place_details: string,
-  place_image_url: string,
   geo_coordinates:{ latitude: number, longitude: number },
   place_address: string,
   ticket_price: string,
@@ -54,7 +61,6 @@ const ChatBox = () => {
   const [trip, setTrip] = useState<TripInfo>()
   const userGlobe = userStore((state: any) => state.userGlobe)
   const updateCurrentTrips = tripStore((state) => state.updateCurrentTrips)
-
 
   const CreateTrip = useMutation(api.tripList.CreateNewTrip)
 

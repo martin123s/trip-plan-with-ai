@@ -1,20 +1,24 @@
 import { create } from 'zustand'
 
-export type DestinationURL = {
-  destination: string
-  dest_image_url: string
-  tripId: string
+
+export type SingleImageURL = {
+  name: string
+  type: string
+  url: string
 }
 
-type TripZustandType = {
-  destImageURL: DestinationURL[]
-  addDestImage: (newDest: DestinationURL) => void
+type ImageZustandType = {
+  imageURLs: SingleImageURL[]
+  addImage: (url: SingleImageURL) => void
+  getAllImageURL: (urls: SingleImageURL[]) => void
 }
 
-export const imageURLStore = create<TripZustandType>((set) => ({
-  destImageURL: [],
-  addDestImage: (newDest) =>
+export const imageURLStore = create<ImageZustandType>((set) => ({
+  imageURLs: [], 
+  addImage: (url) =>
     set((state) => ({
-      destImageURL: [...state.destImageURL, newDest],
+      imageURLs: [...state.imageURLs, url],
     })),
+  
+  getAllImageURL: (urls) => set({imageURLs: urls})
 }))

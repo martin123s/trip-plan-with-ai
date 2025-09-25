@@ -3,8 +3,8 @@ import { create } from 'zustand'
 
 export type TripDoc = {
   tripDetails: TripInfo
-  tripId: string,
-  userId: string,
+  tripId: string
+  userId: string
   _id: string
 }
 

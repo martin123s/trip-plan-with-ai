@@ -6,27 +6,48 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import { Hotel } from './ChatBox'
+import { useMutation } from 'convex/react'
+import { api } from '@/convex/_generated/api'
+import { imageURLStore } from '@/store/useImageURLStore'
 
 
 const HotelCard = ({ hotel }: { hotel: Hotel }) => {
 
+  const CreateImgURL = useMutation(api.imageUrlList.CreateImageURL)
+  const imageURLs = imageURLStore(state => state.imageURLs)
+  const addImage = imageURLStore(state => state.addImage)
+
   const [url, setUrl] = useState<string>()
 
   useEffect(() => {
-    hotel && GetGooglePlace()
-  }, [hotel])
+    if (!hotel) return
+    const existingURL = imageURLs.find(img => img.name === hotel.hotel_name)
+    if (existingURL) {
+      setUrl(existingURL.url)
+      return
+    }
+    GetGooglePlace()
+  }, [hotel, imageURLs])
 
-  const GetGooglePlace = async() => {
+  const GetGooglePlace = async () => {
     const res = await axios.post('/api/google-place-detail', { placeName: hotel?.hotel_name })
     const safeUrl = res?.data ? res.data : undefined
-    setUrl(safeUrl)
+
+    if (safeUrl) {
+      setUrl(safeUrl)
+      addImage({ name: hotel?.hotel_name, type: "hotel", url: safeUrl })
+      await CreateImgURL({ name: hotel?.hotel_name, type: "hotel", url: safeUrl })
+    }
   }
 
   return (
     <div className="flex flex-col gap-1">
       
       <div className="relative w-full aspect-[4/3] md:aspect-video rounded-xl shadow-lg overflow-hidden mb-2 ">
-        <Image src={url ? url : 'https://assets.aceternity.com/templates/startup-1.webp'} alt='hotel image'
+        {/* <Image src={url ? url : 'https://assets.aceternity.com/templates/startup-1.webp'} alt='hotel image'
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" className='object-cover' fill /> */}
+        
+        <Image src={url? url : 'https://assets.aceternity.com/templates/startup-1.webp'} alt='hotel image'
         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" className='object-cover' fill/>
       </div>
       <h2 className="text-xl text-teal-800 line-clamp-1">{hotel?.hotel_name}</h2>

@@ -26,7 +26,7 @@ Once all required information is collected, generate and return a **strict JSON 
   ui: 'groupSize/budget/tripDuration/special/final'
 }`;
 
-const FINAL_PROMPT = `Generate Travel Plan with given details, give me Hotels options list with hotel name, hotel address, price per night, hotel image url, geo coordinates, rating, descriptions of hotel and suggest itinerary with place name, place details, place image url, place geo coordinates, place address, ticket price, time travel each of the location, with each day plan with best time to visit in JSON format.
+const FINAL_PROMPT = `Generate Travel Plan with given details, give me Hotels options list with hotel name, hotel address, price per night, geo coordinates, rating, descriptions of hotel and suggest itinerary with place name, place details, place geo coordinates, place address, ticket price, time travel each of the location, with each day plan with best time to visit in JSON format.
 Output schema:
 {
   "trip_plan": {
@@ -39,7 +39,6 @@ Output schema:
       "hotel_name": "string",
       "hotel_address": "string",
       "price_per_night": "string",
-      "hotel_image_url": "string",
       "geo_coordinates":{ "latitude": "number", "longitude": "number" },
       "rating": "number",
       "description": "string",
@@ -51,7 +50,6 @@ Output schema:
       "activities":[{
         "place_name": "string",
         "place_details": "string",
-        "place_image_url": "string",
         "geo_coordinates":{ "latitude": "number", "longitude": "number" },
         "place_address": "string",
         "ticket_price": "string",

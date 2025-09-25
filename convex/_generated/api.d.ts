@@ -13,6 +13,7 @@ import type {
   FilterApi,
   FunctionReference,
 } from "convex/server";
+import type * as imageUrlList from "../imageUrlList.js";
 import type * as tripList from "../tripList.js";
 import type * as user from "../user.js";
 
@@ -25,6 +26,7 @@ import type * as user from "../user.js";
  * ```
  */
 declare const fullApi: ApiFromModules<{
+  imageUrlList: typeof imageUrlList;
   tripList: typeof tripList;
   user: typeof user;
 }>;
